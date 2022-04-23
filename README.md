@@ -24,10 +24,20 @@ Just keep in mind that there is no intention to ensure compatability with Node <
 To install:
 
 1. Clone to a location somewhere and then `cd app` and `npm install --production`. If you want to develop and rebuild javascript and other files utilize `npm install` instead.
+# mac os use X11
+brew install xquartz
+open /Applications/Utilities/XQuartz.app
+
+# to build client ts file
+npm install -g typescript
+
+cd app/client
+# update to your new code
+yarn build
 
 2. If desired, edit app/config.json to change the listener to your liking. There are also some default options which may be definied for a few of the variables.
 
-3. Run `npm start`
+3. Run `yarn start`
 
 4. Fire up a browser, navigate to IP/port of your choice and specify a host (https isn't used here because it's assumed it will be off-loaded to
 some sort of proxy):

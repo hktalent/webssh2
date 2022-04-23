@@ -18,15 +18,26 @@
         <div id="dropupContent" class="dropup-content">
           <a id="logBtn"><i class="fas fa-clipboard fa-fw"></i> Start Log</a>
           <a id="downloadLogBtn"><i class="fas fa-download fa-fw"></i> Download Log</a>
-          <a id="reauthBtn" style="display: none;"><i class="fas fa-key fa-fw"></i> Switch User</a>
           <a id="credentialsBtn" style="display: none;"><i class="fas fa-key fa-fw"></i> Credentials</a>
+          <a id="autoSendRest" title="auto login send reset"><input type="checkbox" id="autoSendResCkt"></input><a><nobr>auto Rest</nobr></a></a>
         </div>
       </div>
+      <div style="float: right">ip:<input id="ipId">port:<input id="portId">user:<input id="userId">pswd:<input type="password" id="pswd">key:<input id="keyId"><input type="button" value="connect" id="cnnbtId"></div>
       <div id="footer"></div>
       <div id="status"></div>
       <div id="countdown"></div>
     </div>
   </div>
 <script src="/ssh/webssh2.bundle.js" defer></script>
+<script>
+var a = location.href.split('/ssh/host/'),oIp = document.getElementById('ipId'),oPort = document.getElementById('portId'),oUser = document.getElementById('userId')
+if("" == oUser.value)oUser.value='root'
+if(2 == a.length){
+  a = a[1].split('?port=')
+  oIp.value=a[0]
+  if(1 < a.length)oPort.value=a[1]
+}
+
+</script>
 </body>
 </html>

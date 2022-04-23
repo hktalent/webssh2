@@ -3,6 +3,7 @@
     "outDir": "./built",
     "allowJs": true,
     "target": "es6",
+    // "skipLibCheck": true,
     "moduleResolution": "node"
   },
   "include": ["./src/**/*"],

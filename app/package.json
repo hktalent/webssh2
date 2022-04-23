@@ -32,12 +32,14 @@
     "url": "https://github.com/billchurch/WebSSH2/issues"
   },
   "dependencies": {
+    "async": "^3.2.3",
     "basic-auth": "~2.0.1",
     "cidr-matcher": "^2.1.1",
     "colors": "~1.4.0",
     "debug": "^4.3.2",
     "express": "~4.17.1",
     "express-session": "~1.17.1",
+    "level": "^8.0.0",
     "morgan": "~1.10.0",
     "read-config-ng": "^3.0.5",
     "serve-favicon": "^2.5.0",

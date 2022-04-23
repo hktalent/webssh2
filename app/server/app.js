@@ -32,12 +32,13 @@ const appSocket = require('./socket');
 const expressOptions = require('./expressOptions');
 const myutil = require('./util');
 
-myutil.setDefaultCredentials(
-  config.user.name,
-  config.user.password,
-  config.user.privatekey,
-  config.user.overridebasic
-);
+// set basicAuth default user and paswd
+// myutil.setDefaultCredentials(
+//   config.user.name,
+//   config.user.password,
+//   config.user.privatekey,
+//   config.user.overridebasic
+// );
 
 // safe shutdown
 let shutdownMode = false;
@@ -65,7 +66,7 @@ module.exports = { server, config };
 // express
 app.use(safeShutdownGuard);
 app.use(session);
-app.use(myutil.basicAuth);
+// app.use(myutil.basicAuth);
 if (config.accesslog) app.use(logger('common'));
 app.disable('x-powered-by');
 
@@ -88,66 +89,74 @@ app.get('/ssh/reauth', (req, res) => {
 app.get('/ssh/host/:host?', (req, res) => {
   res.sendFile(path.join(path.join(publicPath, 'client.htm')));
   // capture, assign, and validate variables
-  req.session.ssh = {
+  // Optimized code to be more readable，Improve maintainability
+  configSsh = config.ssh
+  reqParams = req.params
+  reqQuery = req.query
+  ct = config.terminal
+  reqHeaders = req.headers
+
+  rss = req.session.ssh = {
     host:
-      config.ssh.host ||
-      (validator.isIP(`${req.params.host}`) && req.params.host) ||
-      (validator.isFQDN(req.params.host) && req.params.host) ||
-      (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.params.host) && req.params.host),
+      configSsh.host ||
+      (validator.isIP(`${reqParams.host}`) && reqParams.host) ||
+      (validator.isFQDN(reqParams.host) && reqParams.host) ||
+      (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(reqParams.host) && reqParams.host),
     port:
-      (validator.isInt(`${req.query.port}`, { min: 1, max: 65535 }) && req.query.port) ||
-      config.ssh.port,
-    localAddress: config.ssh.localAddress,
-    localPort: config.ssh.localPort,
+      (validator.isInt(`${reqQuery.port}`, { min: 1, max: 65535 }) && reqQuery.port) ||
+      configSsh.port,
+    localAddress: configSsh.localAddress,
+    localPort: configSsh.localPort,
     header: {
-      name: req.query.header || config.header.text,
-      background: req.query.headerBackground || config.header.background,
+      name: reqQuery.header || config.header.text,
+      background: reqQuery.headerBackground || config.header.background,
     },
     algorithms: config.algorithms,
-    keepaliveInterval: config.ssh.keepaliveInterval,
-    keepaliveCountMax: config.ssh.keepaliveCountMax,
-    allowedSubnets: config.ssh.allowedSubnets,
+    keepaliveInterval: configSsh.keepaliveInterval,
+    keepaliveCountMax: configSsh.keepaliveCountMax,
+    allowedSubnets: configSsh.allowedSubnets,
     term:
-      (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.query.sshterm) && req.query.sshterm) ||
-      config.ssh.term,
+      (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(reqQuery.sshterm) && reqQuery.sshterm) ||
+      configSsh.term,
     terminal: {
-      cursorBlink: validator.isBoolean(`${req.query.cursorBlink}`)
-        ? myutil.parseBool(req.query.cursorBlink)
-        : config.terminal.cursorBlink,
+      cursorBlink: validator.isBoolean(`${reqQuery.cursorBlink}`)
+        ? myutil.parseBool(reqQuery.cursorBlink)
+        : ct.cursorBlink,
       scrollback:
-        validator.isInt(`${req.query.scrollback}`, { min: 1, max: 200000 }) && req.query.scrollback
-          ? req.query.scrollback
-          : config.terminal.scrollback,
+        validator.isInt(`${reqQuery.scrollback}`, { min: 1, max: 200000 }) && reqQuery.scrollback
+          ? reqQuery.scrollback
+          : ct.scrollback,
       tabStopWidth:
-        validator.isInt(`${req.query.tabStopWidth}`, { min: 1, max: 100 }) && req.query.tabStopWidth
-          ? req.query.tabStopWidth
-          : config.terminal.tabStopWidth,
+        validator.isInt(`${reqQuery.tabStopWidth}`, { min: 1, max: 100 }) && reqQuery.tabStopWidth
+          ? reqQuery.tabStopWidth
+          : ct.tabStopWidth,
       bellStyle:
-        req.query.bellStyle && ['sound', 'none'].indexOf(req.query.bellStyle) > -1
-          ? req.query.bellStyle
-          : config.terminal.bellStyle,
+        reqQuery.bellStyle && ['sound', 'none'].indexOf(reqQuery.bellStyle) > -1
+          ? reqQuery.bellStyle
+          : ct.bellStyle,
     },
     allowreplay:
       config.options.challengeButton ||
-      (validator.isBoolean(`${req.headers.allowreplay}`)
-        ? myutil.parseBool(req.headers.allowreplay)
+      (validator.isBoolean(`${reqHeaders.allowreplay}`)
+        ? myutil.parseBool(reqHeaders.allowreplay)
         : false),
     allowreauth: config.options.allowreauth || false,
     mrhsession:
-      validator.isAlphanumeric(`${req.headers.mrhsession}`) && req.headers.mrhsession
-        ? req.headers.mrhsession
+      validator.isAlphanumeric(`${reqHeaders.mrhsession}`) && reqHeaders.mrhsession
+        ? reqHeaders.mrhsession
         : 'none',
     serverlog: {
       client: config.serverlog.client || false,
       server: config.serverlog.server || false,
     },
     readyTimeout:
-      (validator.isInt(`${req.query.readyTimeout}`, { min: 1, max: 300000 }) &&
-        req.query.readyTimeout) ||
-      config.ssh.readyTimeout,
+      (validator.isInt(`${reqQuery.readyTimeout}`, { min: 1, max: 300000 }) &&
+        reqQuery.readyTimeout) ||
+      configSsh.readyTimeout,
   };
-  if (req.session.ssh.header.name) validator.escape(req.session.ssh.header.name);
-  if (req.session.ssh.header.background) validator.escape(req.session.ssh.header.background);
+  rssHd = rss.header
+  if (rssHd.name) validator.escape(rssHd.name);
+  if (rssHd.background) validator.escape(rssHd.background);
 });
 
 // express error handling

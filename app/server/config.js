@@ -40,9 +40,9 @@ let config = {
     text: null,
     background: 'green',
   },
-  session: {
-    name: 'WebSSH2',
-    secret: 'mysecret',
+  "session": {
+    "name": "51pwn4ssh",
+    "secret": "A67839B5-C1AA-413A-B560-B3480C8BF10B"
   },
   options: {
     challengeButton: true,
