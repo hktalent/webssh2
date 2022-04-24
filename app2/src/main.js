@@ -1,16 +1,17 @@
 import Vue from 'vue'
-import ElementUI from 'element-ui';
-
 import App from './App.vue'
-// import VueRouter from 'vue-router'
-// Vue.use(VueRouter);
-Vue.use(ElementUI);
-Vue.config.productionTip = false;
+import './registerServiceWorker'
+import router from './router'
+import store from './store'
+
+import ElementUI from 'element-ui'
+
+Vue.use(ElementUI)
+
+Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  // router,
-  // components:{App},
-  // template: "<App/>"
+  router,
+  store,
   render: h => h(App)
-})
+}).$mount('#app')
