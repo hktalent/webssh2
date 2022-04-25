@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  mywebssh:
+    image: node:slim
+    tty: true
+    restart: always
+    container_name: web_ssh
+    volumes:
+      - ./:/app
+    ports:
+    - 2222:2222
+    entrypoint:
+    - /bin/sh
+    - /app/run.sh
