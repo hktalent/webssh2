@@ -50,11 +50,7 @@ const footer = document.getElementById('footer');
 const countdown = document.getElementById('countdown');
 const fitAddon = new FitAddon();
 const terminalContainer = document.getElementById('terminal-container');
-const oIp = document.getElementById('ipId') as HTMLInputElement;
-const oPort = document.getElementById('portId') as HTMLInputElement;
-const oU = document.getElementById('userId') as HTMLInputElement;
-const oPswd = document.getElementById('pswd') as HTMLInputElement;
-const oKey = document.getElementById('keyId') as HTMLInputElement;
+
 term.loadAddon(fitAddon);
 term.open(terminalContainer);
 term.focus();
@@ -64,10 +60,9 @@ const socket = io({
   path: '/ssh/socket.io',
 });
 
-function fnConnect() {
-  socket.emit('connSsh', oIp.value, oPort.value, oU.value, oPswd.value, oKey.value);
+function fnConnect(ip, port, u, p, k) {
+  socket.emit('connSsh', ip, port, u, p, k);
 }
-document.getElementById('cnnbtId').addEventListener('click', fnConnect);
 // reauthenticate
 function reauthSession () { // eslint-disable-line
   debug('re-authenticating');

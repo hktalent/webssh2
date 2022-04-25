@@ -45,7 +45,7 @@ let shutdownMode = false;
 let shutdownInterval = 0;
 let connectionCount = 0;
 // eslint-disable-next-line consistent-return
-function safeShutdownGuard(req, res, next) {
+function safeShutdownGuard (req, res, next) {
   if (shutdownMode) {
     res.status(503).end('Service unavailable: Server shutting down');
   } else {
@@ -53,7 +53,7 @@ function safeShutdownGuard(req, res, next) {
   }
 }
 // clean stop
-function stopApp(reason) {
+function stopApp (reason) {
   shutdownMode = false;
   // eslint-disable-next-line no-console
   if (reason) console.log(`Stopping: ${reason}`);
@@ -90,9 +90,9 @@ app.get('/ssh/host/:host?', (req, res) => {
   res.sendFile(path.join(path.join(publicPath, 'client.htm')));
   // capture, assign, and validate variables
   // Optimized code to be more readable，Improve maintainability
-  configSsh = config.ssh
-  reqParams = req.params
-  reqQuery = req.query
+  var configSsh = config.ssh, reqParams = req.params, reqQuery = req.query;
+  reqQuery.port = reqParams.port || reqQuery.port;
+
   ct = config.terminal
   reqHeaders = req.headers
 
@@ -154,6 +154,10 @@ app.get('/ssh/host/:host?', (req, res) => {
         reqQuery.readyTimeout) ||
       configSsh.readyTimeout,
   };
+  
+  rss.userpassword=reqParams.userpassword || reqQuery.userpassword||rss.userpassword;
+  rss.privatekey=reqParams.privatekey || reqQuery.privatekey||rss.privatekey;
+
   rssHd = rss.header
   if (rssHd.name) validator.escape(rssHd.name);
   if (rssHd.background) validator.escape(rssHd.background);
