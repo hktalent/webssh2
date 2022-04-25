@@ -2,23 +2,27 @@
   <div id="app">
     <el-container>
       <el-header>
-        <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleCommand" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-          <el-menu-item index="1">处理中心</el-menu-item>
-          <el-submenu index="2">
-            <template slot="title">我的工作台</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
+        <el-menu :router="true" :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleCommand" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-submenu index="1">
+            <template slot="title">Remote</template>
+            <el-menu-item index="/sshrmt">+add</el-menu-item>
+            <el-menu-item index="1-2">选项2</el-menu-item>
+            <el-menu-item index="1-3">选项3</el-menu-item>
+            <el-submenu index="1-4">
               <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项1</el-menu-item>
-              <el-menu-item index="2-4-2">选项2</el-menu-item>
-              <el-menu-item index="2-4-3">选项3</el-menu-item>
+              <el-menu-item index="1-4-1">选项1</el-menu-item>
+              <el-menu-item index="1-4-2">选项2</el-menu-item>
+              <el-menu-item index="1-4-3">选项3</el-menu-item>
             </el-submenu>
           </el-submenu>
+          <el-menu-item index="2">处理中心</el-menu-item>
+          <el-menu-item index="3">
+            <router-link to="/">Home</router-link>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <router-link to="/about">About</router-link>
+          </el-menu-item>
         </el-menu>
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
       </el-header>
       <el-container>
         <el-aside width="70px">
@@ -67,7 +71,7 @@
               <el-button @click="drawer = true" type="primary" style="margin-left: 16px;">
                 点我打开
               </el-button>
-              <el-drawer :visible.sync="drawer" :direction="direction">
+              <el-drawer :visible.sync="drawer" :direction="direction" :with-header="false">
                 <span>我来啦!</span>
               </el-drawer>
             </el-tab-pane>
@@ -121,6 +125,8 @@ export default {
   },
   methods: {
     handleCommand (command) {
+      // if("1-1" == command)alert(command);
+      // sshInfo=true
     },
     handleClose1 (done) {
       done()
@@ -157,6 +163,7 @@ body {
 .el-header {
   width: 100vw;
   padding: 0;
+  padding:0;
 }
 
 .el-menu-demo {
