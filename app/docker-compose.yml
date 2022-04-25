@@ -10,6 +10,7 @@ services:
       - ./:/app
     ports:
     - 2222:2222
+    working_dir: /app
     entrypoint:
     - /bin/sh
-    - /app/run.sh
+    - ./run.sh

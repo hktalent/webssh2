@@ -10,6 +10,15 @@ yarn install --production
 # npm start
 yarn start
 ```
+## docker run
+start
+```bash
+docker-compose up -d
+```
+stop
+```bash
+docker-compose down 
+```
 
 # mac os use X11
 brew install xquartz
