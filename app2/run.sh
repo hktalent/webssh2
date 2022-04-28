@@ -1,1 +1,1 @@
-yarn serve
+yarn serve --fix

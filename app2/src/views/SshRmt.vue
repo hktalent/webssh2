@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card">
+  <el-card class="box-card" shadow="hover">
     <el-form>
       <el-row>
         <el-col :span="12">
@@ -49,7 +49,8 @@ margin:8px 0 8px 0;
 }
 </style>
 <script>
-import axios from "axios";
+import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -65,8 +66,15 @@ export default {
   },
   methods: {
     saveSshConfig () {
-      const article = { title: "Vue POST Request Example" };
-      axios.post("https://reqres.in/api/articles", article).then(response => this.articleId = response.data.id);
+      const article = { title: 'Vue POST Request Example' }
+      axios.post('https://reqres.in/api/articles', article).then(response => {
+        this.articleId = response.data.id
+        return 0
+      }
+      ).catch(function (error) {
+        alert(error)
+      }
+      )
     }
   }
 }

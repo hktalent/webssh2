@@ -65,15 +65,9 @@
           </el-scrollbar>
         </el-aside>
         <el-main style="height:calc(-100px + 100vh)">
-          <router-view></router-view>
           <el-tabs type="border-card" style="height:100%;flex-grow:1;">
-            <el-tab-pane label="用户管理">
-              <el-button @click="drawer = true" type="primary" style="margin-left: 16px;">
-                点我打开
-              </el-button>
-              <el-drawer :visible.sync="drawer" :direction="direction" :with-header="false">
-                <span>我来啦!</span>
-              </el-drawer>
+            <el-tab-pane label="Remoute Config Manager">
+            <router-view></router-view>
             </el-tab-pane>
             <el-tab-pane label="配置管理">
               <template>
@@ -83,8 +77,23 @@
                 </el-select>
               </template>
             </el-tab-pane>
-            <el-tab-pane label="角色管理">角色管理</el-tab-pane>
-            <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
+            <el-tab-pane label="角色管理"> <el-button @click="drawer = true" type="primary" style="margin-left: 16px;">
+                点我打开
+              </el-button>
+              <el-drawer :visible.sync="drawer" :direction="direction" :with-header="false">
+                <span>我来啦!</span>
+              </el-drawer></el-tab-pane>
+            <el-tab-pane label="定时任务补偿"><el-row :gutter="12">
+            <el-col :span="8">
+    <el-card shadow="hover">
+    <div slot="header" class="clearfix">
+    <span>卡片名称</span>
+    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+  </div>
+      <iframe src="https://www.51pwn.com" class="ifrm"></iframe>
+    </el-card>
+  </el-col></el-row>
+  </el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>
@@ -160,6 +169,13 @@ body {
   margin: 0
 }
 
+.ifrm{
+border:0;
+margin: 0;
+padding: 0;
+width:100%;
+height:100%;
+}
 .el-header {
   width: 100vw;
   padding: 0;
