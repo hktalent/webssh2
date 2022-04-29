@@ -66,6 +66,13 @@
         </el-aside>
         <el-main style="height:calc(-100px + 100vh)">
           <el-tabs type="border-card" style="height:100%;flex-grow:1;">
+          <el-tab-pane v-for="(item) in editableTabs"
+    :key="item.name"
+    :label="item.title"
+    :name="item.name"
+  >
+    {{item.content}}
+  </el-tab-pane>
             <el-tab-pane label="Remoute Config Manager">
             <router-view></router-view>
             </el-tab-pane>
@@ -77,10 +84,11 @@
                 </el-select>
               </template>
             </el-tab-pane>
-            <el-tab-pane label="角色管理"> <el-button @click="drawer = true" type="primary" style="margin-left: 16px;">
+            <el-tab-pane label="角色管理" closable>
+            <el-button @click="drawer = true" type="primary" style="margin-left: 16px;">
                 点我打开
               </el-button>
-              <el-drawer :visible.sync="drawer" :direction="direction" :with-header="false">
+              <el-drawer :visible.sync="drawer" :direction="direction" :with-header="false" size="120px">
                 <span>我来啦!</span>
               </el-drawer></el-tab-pane>
             <el-tab-pane label="定时任务补偿"><el-row :gutter="12">
@@ -108,6 +116,18 @@ export default {
   runtimeCompiler: true,
   data () {
     return {
+      wdwidth:"100px",
+       editableTabsValue: '2',
+        editableTabs: [{
+          title: 'Tab 1',
+          name: '1111',
+          content: 'Tab 1 <pre>con\nte\nnt</pre>'
+        }, {
+          title: 'Tab 2',
+          name: '2222',
+          content: 'Tab 2 content'
+        }],
+        tabIndex: 99,
       isCollapse: true,
       activeIndex2: '2-0',
       options: [{
