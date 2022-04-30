@@ -32,7 +32,7 @@
       </el-row>
       <el-row>
         <el-form-item label-width="0">
-          <el-button @click="saveSshConfig" ref="r7">保存</el-button>
+          <v-btn elevation="19" @click="saveSshConfig" ref="r7">保存</v-btn>
         </el-form-item>
       </el-row>
     </el-form>

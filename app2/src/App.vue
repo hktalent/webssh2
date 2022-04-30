@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header>
-        <el-menu :router="true" :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleCommand" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+      <el-header background="trasla">
+        <el-menu dark :router="true" :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleCommand" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
           <el-submenu index="1">
             <template slot="title">Remote</template>
             <el-menu-item index="/sshrmt">+add</el-menu-item>
-            <el-menu-item index="1-2">选项2</el-menu-item>
+            <el-menu-item index="/conn/1">Home AS6510T-60C1</el-menu-item>
+            <el-menu-item index="/conn/2">My Vps-01</el-menu-item>
             <el-menu-item index="1-3">选项3</el-menu-item>
             <el-submenu index="1-4">
               <template slot="title">选项4</template>
@@ -94,11 +95,7 @@
             <el-tab-pane label="定时任务补偿"><el-row :gutter="12">
             <el-col :span="8">
     <el-card shadow="hover">
-    <div slot="header" class="clearfix">
-    <span>卡片名称</span>
-    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-  </div>
-      <iframe src="https://www.51pwn.com" class="ifrm"></iframe>
+    <iframe :src="rmtHref" class="ifrm"></iframe>
     </el-card>
   </el-col></el-row>
   </el-tab-pane>
@@ -116,6 +113,8 @@ export default {
   runtimeCompiler: true,
   data () {
     return {
+      fullScreen: false,
+      rmtHref: '',
       wdwidth:"100px",
        editableTabsValue: '2',
         editableTabs: [{
@@ -154,8 +153,9 @@ export default {
   },
   methods: {
     handleCommand (command) {
-      // if("1-1" == command)alert(command);
-      // sshInfo=true
+      if (-1 < String(command).indexOf('/conn/')){
+          this.rmtHref = command
+      }
     },
     handleClose1 (done) {
       done()
@@ -195,6 +195,9 @@ margin: 0;
 padding: 0;
 width:100%;
 height:100%;
+}
+::v-deep .el-card__body {
+  padding:20px 0 0 0;
 }
 .el-header {
   width: 100vw;
