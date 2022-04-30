@@ -85,8 +85,15 @@ app.get('/ssh/reauth', (req, res) => {
     );
 });
 
-// eslint-disable-next-line complexity
-app.get('/ssh/host/:host?', (req, res) => {
+var fnSshCbk=function(req, res){
+  if(req.query)
+  {
+    for(k in req.query)
+    {
+      if(req.query[k])req.params[k]=req.query[k]
+    }
+  }
+  // console.log(req.query);
   res.sendFile(path.join(path.join(publicPath, 'client.htm')));
   // capture, assign, and validate variables
   // Optimized code to be more readable，Improve maintainability
@@ -97,6 +104,7 @@ app.get('/ssh/host/:host?', (req, res) => {
   reqHeaders = req.headers
 
   rss = req.session.ssh = {
+    username:req.params['username']||configSsh.username,
     host:
       configSsh.host ||
       (validator.isIP(`${reqParams.host}`) && reqParams.host) ||
@@ -157,11 +165,17 @@ app.get('/ssh/host/:host?', (req, res) => {
   
   rss.userpassword=reqParams.userpassword || reqQuery.userpassword||rss.userpassword;
   rss.privatekey=reqParams.privatekey || reqQuery.privatekey||rss.privatekey;
+  req.session['username'] = rss['username']
+  req.session['userpassword'] = rss['userpassword']
+  req.session['privatekey'] = rss['privatekey']
 
   rssHd = rss.header
   if (rssHd.name) validator.escape(rssHd.name);
   if (rssHd.background) validator.escape(rssHd.background);
-});
+};
+// eslint-disable-next-line complexity
+app.post(/\/ssh\/host\/.*/, fnSshCbk);
+app.get('/ssh/host/:host?', fnSshCbk);
 
 // express error handling
 app.use((req, res) => {

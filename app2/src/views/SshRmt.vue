@@ -14,7 +14,7 @@
           <el-input  size="small" placeholder="please input IP or Domain name" v-model="form.ip"><template slot="prepend">IP or Domain name:</template></el-input>
         </el-col>
         <el-col :span="12">
-          <el-input  size="small" placeholder="please input port" v-model="form.port"><template slot="prepend">Port:</template></el-input>
+          <el-input  size="small" placeholder="please input port" v-model.number="form.port"><template slot="prepend">Port:</template></el-input>
         </el-col>
       </el-row>
       <el-row>
@@ -74,7 +74,7 @@ export default {
     },
     saveSshConfig () {
       axios.post('/api/v1/rsc', this.form).then(resp => {
-        if (resp.data.code === 1)Message.success('save ok')
+        if (resp.data.code === 1)Message.success('save msg: ' + resp.data.msg)
         else Message.info('save error: ' + resp.data.msg)
         return 0
       }
