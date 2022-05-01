@@ -4,7 +4,7 @@
       <el-header background="trasla">
         <el-menu dark :router="true" :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleCommand" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
           <el-submenu index="1">
-            <template slot="title">Remote</template>
+            <template slot="title"><i class="icon-fixed-width icon-cogs icon-1x"></i>RemoteConfig</template>
             <el-menu-item index="/sshrmt">+add</el-menu-item>
             <el-menu-item index="/conn/1">Home AS6510T-60C1</el-menu-item>
             <el-menu-item index="/conn/2">My Vps-01</el-menu-item>
@@ -94,19 +94,22 @@
               </el-drawer></el-tab-pane>
             <el-tab-pane label="定时任务补偿"><el-row :gutter="12">
             <el-col :span="8">
-    <el-card shadow="hover">
-    <iframe :src="rmtHref" class="ifrm"></iframe>
+    <el-card shadow="hover" id="xFw">
+    <div class="winCtrl"><i class="icon-mail-reply" title="back to view" @click="fnMinWin"></i><i class="icon-external-link-sign" title="max window" @click="fnMaxWin"></i><i @click="fnFsc" class="icon-fullscreen" title="fullscreen"></i></div>
+    <i class="clearfix"></i>
+    <iframe :src="rmtHref" class="ifrm" id="xFsc"></iframe>
     </el-card>
   </el-col></el-row>
   </el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>
-      <el-footer>Footer</el-footer>
+      <el-footer><i class="icon-play"></i>Footer</el-footer>
     </el-container>
   </div>
 </template>
 <script>
+import myjs from './myjs'
 /* eslint-disable */
 export default {
   name: 'app',
@@ -160,6 +163,15 @@ export default {
     handleClose1 (done) {
       done()
     },
+    fnMinWin () {
+      myjs.fnMinWin('xFw')
+    },
+    fnMaxWin () {
+      myjs.fnMaxWin('xFw')
+    },
+    fnFsc () {
+      myjs.fnFullScreen('xFsc')
+    },
     fltFunc (s) {// 下拉列表过滤
       if ("" != s) {
         s = String(s).toLowerCase()
@@ -184,11 +196,28 @@ export default {
 </script>
 <style lang="less">
 @import url("//unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css");
+@import url("css/font-awesome.css");
 
 body {
   margin: 0
 }
+.winCtrl{
+  float: right;
+  position: relative;
+  top:-15px;
+}
 
+.maxWin {
+  position: fixed;
+  float: left;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index:999999
+}
+
+.winCtrl i{margin:3px !important;cursor:pointer}
 .ifrm{
 border:0;
 margin: 0;
@@ -196,8 +225,10 @@ padding: 0;
 width:100%;
 height:100%;
 }
-::v-deep .el-card__body {
+.el-card__body {
   padding:20px 0 0 0;
+  width:100%;
+  height:100%
 }
 .el-header {
   width: 100vw;
