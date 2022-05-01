@@ -6,7 +6,7 @@
           <el-input  size="small" placeholder="please input  name" v-model="form.title"><template slot="prepend">Title:</template></el-input>
         </el-col>
         <el-col :span="12">
-          <el-input  size="small" placeholder="please input port" v-model="form.tags"><template slot="prepend">Tags:</template></el-input>
+        <vue-tags-input v-model="form.tags" :tags="tags" @tags-changed="newTags => tags = newTags"></vue-tags-input><!-- <el-input  size="small" placeholder="please input port" v-model="form.tags"><template slot="prepend">Tags:</template></el-input> -->
         </el-col>
       </el-row>
       <el-row>
@@ -51,10 +51,15 @@ margin:8px 0 8px 0;
 <script>
 import axios from 'axios'
 import { Message } from 'element-ui'
+import VueTagsInput from '@johmun/vue-tags-input'
 
 export default {
+  components: {
+    VueTagsInput
+  },
   data () {
     return {
+      tags: [],
       form: {
         title: 'Home AS6510T-60C1',
         tags: 'ssh',
