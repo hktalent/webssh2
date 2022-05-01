@@ -14,6 +14,7 @@ const dnsPromises = require('dns').promises;
 const { Level } = require('level')
 const db = new Level('51pwn_Db', { valueEncoding: 'json' })
 const fs = require('fs');
+const bEnableX11 = false;
 
 const net = require('net');
 
@@ -122,15 +123,17 @@ module.exports = function appSocket (socket) {
       termCols = cols;
       termRows = rows;
     });
-    conn.on('x11', (info, accept, reject) => {
-      const xserversock = new net.Socket();
-      xserversock.on('connect', () => {
-        const xclientsock = accept();
-        xclientsock.pipe(xserversock).pipe(xclientsock);
+    if(bEnableX11){
+      conn.on('x11', (info, accept, reject) => {
+        const xserversock = new net.Socket();
+        xserversock.on('connect', () => {
+          const xclientsock = accept();
+          xclientsock.pipe(xserversock).pipe(xclientsock);
+        });
+        // connects to localhost:0.0
+        xserversock.connect(6000, 'localhost');
       });
-      // connects to localhost:0.0
-      xserversock.connect(6000, 'localhost');
-    });
+    }
 
     conn.on('banner', (data) => {
       // need to convert to cr/lf for proper formatting
@@ -138,22 +141,24 @@ module.exports = function appSocket (socket) {
     });
 
     conn.on('ready', () => {
-      // X11
-      conn.exec('xeyes', { x11: true }, (err, stream) => {
-        if (err) {
-          console.log("X11 xeyes error: ",err);
-          debugWebSSH2(err);
-          return err;
-        }
-        let code = 0;
-        stream.on('close', () => {
-          if (code !== 0)
-            debugWebSSH2('Do you have X11 forwarding enabled on your SSH server?');
-          conn.end();
-        }).on('exit', (exitcode) => {
-          code = exitcode;
+      if(bEnableX11){
+        // X11
+        conn.exec('xeyes', { x11: true }, (err, stream) => {
+          if (err) {
+            console.log("X11 xeyes error: ",err);
+            debugWebSSH2(err);
+            return err;
+          }
+          let code = 0;
+          stream.on('close', () => {
+            if (code !== 0)
+              debugWebSSH2('Do you have X11 forwarding enabled on your SSH server?');
+            conn.end();
+          }).on('exit', (exitcode) => {
+            code = exitcode;
+          });
         });
-      });
+      }
 
       debugWebSSH2(
         `WebSSH2 Login: user=${srs.username} from=${socket.handshake.address} host=${srs.ssh.host} port=${srs.ssh.port} sessionID=${socket.request.sessionID}/${socket.id} mrhsession=${srs.ssh.mrhsession} allowreplay=${srs.ssh.allowreplay} term=${srs.ssh.term}`
