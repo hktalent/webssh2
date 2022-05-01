@@ -217,6 +217,10 @@ body {
   z-index:999999
 }
 
+.el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
+    -webkit-box-shadow: 0 4px 36px 0 rgba(0, 0, 0, .1);
+    box-shadow:0 4px 36px 0 rgba(0, 0, 0, .1)
+}
 .winCtrl i{margin:3px !important;cursor:pointer}
 .ifrm{
 border:0;
