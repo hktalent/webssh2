@@ -104,6 +104,7 @@ var fnSshCbk=function(req, res){
   reqHeaders = req.headers
 
   rss = req.session.ssh = {
+    autoReset: config.autoReset,
     username:req.params['username']||configSsh.username,
     host:
       configSsh.host ||

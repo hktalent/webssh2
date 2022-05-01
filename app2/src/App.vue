@@ -2,12 +2,12 @@
   <div id="app">
     <el-container>
       <el-header background="trasla">
-        <el-menu dark :router="true" :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleCommand" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu ref="menu" :router="true" :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleCommand" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
           <el-submenu index="1">
             <template slot="title"><i class="icon-fixed-width icon-cogs icon-1x"></i>RemoteConfig</template>
             <el-menu-item index="/sshrmt">+add</el-menu-item>
-            <el-menu-item index="/conn/1">Home AS6510T-60C1</el-menu-item>
-            <el-menu-item index="/conn/2">My Vps-01</el-menu-item>
+            <el-menu-item index="/conn/1"><i class="icon-h-sign"></i>Home AS6510T-60C1</el-menu-item>
+            <el-menu-item index="/conn/2"><i class="icon-flickr"></i>My Vps-01</el-menu-item>
             <el-menu-item index="1-3">选项3</el-menu-item>
             <el-submenu index="1-4">
               <template slot="title">选项4</template>
@@ -94,12 +94,14 @@
               </el-drawer></el-tab-pane>
             <el-tab-pane label="定时任务补偿"><el-row :gutter="12">
             <el-col :span="8">
-    <el-card shadow="hover" id="xFw">
-    <div class="winCtrl"><i class="icon-mail-reply" title="back to view" @click="fnMinWin"></i><i class="icon-external-link-sign" title="max window" @click="fnMaxWin"></i><i @click="fnFsc" class="icon-fullscreen" title="fullscreen"></i></div>
+    <el-card shadow="hover" id="xFw" v-for="(item) in aRmtSvsLists" :key="item.id" :label="item.title" :name="item.id" :rmtHref="'/conn/'+item.id">
+    <a :href="'#'+item.id">
+    <div class="winCtrl"><i id="fltMneu">{{item.title}}</i><i class="icon-mail-reply" title="back to view" @click="fnMinWin"></i><i class="icon-external-link-sign" title="max window" @click="fnMaxWin"></i><i @click="fnFsc" class="icon-fullscreen" title="fullscreen"></i></div>
     <i class="clearfix"></i>
-    <iframe :src="rmtHref" class="ifrm" id="xFsc"></iframe>
+    <iframe :src="'/conn/'+item.id" class="ifrm" id="xFsc" @load="autoSaveImg"></iframe></a>
     </el-card>
   </el-col></el-row>
+  <img src="" id="myImg">
   </el-tab-pane>
           </el-tabs>
         </el-main>
@@ -110,14 +112,22 @@
 </template>
 <script>
 import myjs from './myjs'
+import html2canvas from 'html2canvas'
 /* eslint-disable */
 export default {
   name: 'app',
   runtimeCompiler: true,
+  bLoad: false,
+  mounted () {
+    if(!this.bLoad) {
+      this.getRmtData();
+    }
+    this.bLoad = true;
+  },
   data () {
     return {
+      aRmtSvsLists: [ ],
       fullScreen: false,
-      rmtHref: '',
       wdwidth:"100px",
        editableTabsValue: '2',
         editableTabs: [{
@@ -155,9 +165,26 @@ export default {
     }
   },
   methods: {
+    getRmtData () {
+      this.$http.get('/api/v1/rmtsvlists').then(function(res) {
+        this.aRmtSvsLists = res.data;
+      },function(res){
+        console.log(res.status);
+      })
+    },
+    autoSaveImg () {
+      if(html2canvas) {
+        // window.setInterval(function(){
+        //   html2canvas(document.getElementById('xFsc').contentWindow.document.body, {allowTaint: true, useCORS: true}).then(function(canvas) {
+        //     const imgDt = canvas.toDataURL("image/webp", 0.6)
+        //     document.getElementById('myImg').src = imgDt
+        //   })
+        // },1000)
+      }
+    },
     handleCommand (command) {
       if (-1 < String(command).indexOf('/conn/')){
-          this.rmtHref = command
+          this.aRmtSvsLists.push( { 'id': command.split('/')[2], 'title': document.activeElement.innerText })
       }
     },
     handleClose1 (done) {
@@ -187,9 +214,6 @@ export default {
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath);
-    },
-    handClickMm () {
-      console.log(arguments)
     }
   }
 }

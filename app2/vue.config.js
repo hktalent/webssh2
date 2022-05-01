@@ -4,7 +4,7 @@ module.exports = defineConfig({
     host: 'localhost',
     port: 8081,
     proxy: {
-      '/api/v1/rsc': {
+      '/api/v1/': {
         target: 'http://127.0.0.1:8081',
         ws: true,
         changeOrigin: true

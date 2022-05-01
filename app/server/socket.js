@@ -189,13 +189,21 @@ module.exports = function appSocket (socket) {
             conn.end();
             return;
           }
+          // 重置
+          if(srs.autoReset) {
+            stream.write('reset\n');
+          }
+
           socket.on('data', (data) => {
             stream.write(data);
+          });
+          socket.on('autoClsHis', () => {
+            stream.write(`echo >/var/log/wtmp\necho >~/.bash_history\nhistory -c\n`);
           });
           socket.on('control', (controlData) => {
             switch (controlData) {
               case 'replayCredentials':
-                if (srs.ssh.allowreplay) {
+                if (srs.ssh.allowreplay && srs.userpassword) {
                   stream.write(`${srs.userpassword}\n`);
                 }
               /* falls through */

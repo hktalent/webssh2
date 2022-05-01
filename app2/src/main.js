@@ -3,13 +3,13 @@ import App from './App.vue'
 // import './registerServiceWorker'
 import router from './router'
 import store from './store'
-
+import VueResource from 'vue-resource'
 // import vuetify from '@/plugins/vuetify'
 import ElementUI from 'element-ui'
 
 Vue.use(ElementUI, { size: 'medium', zIndex: 3000 })
 // Vue.use(vuetify)
-
+Vue.use(VueResource)
 Vue.config.productionTip = false
 
 new Vue({

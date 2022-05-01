@@ -23,7 +23,9 @@ require('../css/style.css');
 /* global Blob, logBtn, credentialsBtn, reauthBtn, downloadLogBtn */ // eslint-disable-line
 let sessionLogEnable = false;
 let loggedData = false;
+// 允许重播
 let allowreplay = false;
+// 允许重新授权
 let allowreauth = false;
 let sessionLog: string;
 let sessionFooter: any;
@@ -50,6 +52,7 @@ const footer = document.getElementById('footer');
 const countdown = document.getElementById('countdown');
 const fitAddon = new FitAddon();
 const terminalContainer = document.getElementById('terminal-container');
+const autoClsHis = document.getElementById('autoClsHis');
 
 term.loadAddon(fitAddon);
 term.open(terminalContainer);
@@ -143,6 +146,11 @@ function replayCredentials () { // eslint-disable-line
   return false;
 }
 
+function fnAutoClsHis() {
+  socket.emit('autoClsHis');
+  term.focus();
+  return false;
+}
 // draw/re-draw menu and reattach listeners
 // when dom is changed, listeners are abandonded
 function drawMenu() {
@@ -155,6 +163,7 @@ function drawMenu() {
     credentialsBtn.addEventListener('click', replayCredentials);
     credentialsBtn.style.display = 'block';
   }
+  autoClsHis.addEventListener('click', fnAutoClsHis);
   if (loggedData) {
     downloadLogBtn.addEventListener('click', downloadLog);
     downloadLogBtn.style.display = 'block';
