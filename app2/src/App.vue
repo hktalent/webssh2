@@ -3,26 +3,17 @@
     <el-container>
       <el-header background="trasla">
         <el-menu ref="menu" :router="true" :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleCommand" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-menu-item index="/#">Home</el-menu-item>
           <el-submenu index="1">
             <template slot="title"><i class="icon-fixed-width icon-cogs icon-1x"></i>RemoteConfig</template>
-            <el-menu-item index="/sshrmt">+add</el-menu-item>
-            <el-menu-item index="/conn/1"><i class="icon-h-sign"></i>Home AS6510T-60C1</el-menu-item>
-            <el-menu-item index="/conn/2"><i class="icon-flickr"></i>My Vps-01</el-menu-item>
-            <el-menu-item index="1-3">选项3</el-menu-item>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-              <el-menu-item index="1-4-2">选项2</el-menu-item>
-              <el-menu-item index="1-4-3">选项3</el-menu-item>
+             <el-submenu index="1-4">
+              <template slot="title"><router-link to="/sshrmt"><div  class="sshrmt" @click="fnSt">+add</div></router-link>
+              </template>
+              <el-menu-item v-for="(item) in aRmtSvsLists" :key="item.id" :id="'cdId'+item.id" :label="item.title" :name="item.id" :index="'/conn/'+item.id">{{item.title}}</el-menu-item>
             </el-submenu>
           </el-submenu>
           <el-menu-item index="2">处理中心</el-menu-item>
-          <el-menu-item index="3">
-            <router-link to="/">Home</router-link>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <router-link to="/about">About</router-link>
-          </el-menu-item>
+          <el-menu-item index="/about">About</el-menu-item>
         </el-menu>
       </el-header>
       <el-container>
@@ -67,17 +58,17 @@
         </el-aside>
         <el-main style="height:calc(-100px + 100vh)">
           <el-tabs type="border-card" style="height:100%;flex-grow:1;">
-          <el-tab-pane v-for="(item) in editableTabs"
-    :key="item.name"
-    :label="item.title"
-    :name="item.name"
-  >
-    {{item.content}}
-  </el-tab-pane>
-            <el-tab-pane label="Remoute Config Manager">
+            <el-tab-pane label="Remote Connection" class="myPaneCard" effect="dark">
+    <el-card shadow="hover" v-for="(item) in aRmtSvsLists" :key="item.id" :id="'cdId'+item.id" :label="item.title" :name="item.id" :rmtHref="'/conn/'+item.id">
+    <a href="#" @click="'#'+item.id">
+    <div class="winCtrl"><i id="fltMneu">{{item.title}}</i><i class="icon-mail-reply" title="back to view" @click="fnMinWin"></i><i class="icon-external-link-sign" title="max window" @click="fnMaxWin"></i><i @click="fnFsc" class="icon-fullscreen" title="fullscreen"></i></div>
+    <div class="myImg" :id="'img' + item.id" :idDt="item.id" @click="handleCommand('/conn/'+item.id)" title="This is the most recent view, click to start connecting"><img :src="item.imgData"></div>
+    <i class="clearfix"></i>
+    <iframe src="" class="ifrm" @load="autoSaveImg($event,item.id)" :id="'ifrm' + item.id"></iframe></a>
+    </el-card>
+  </el-tab-pane><el-tab-pane label="Remoute Config Manager" class="cfgrmt">
             <router-view></router-view>
-            </el-tab-pane>
-            <el-tab-pane label="配置管理">
+            </el-tab-pane><el-tab-pane label="配置管理">
               <template>
                 <el-select v-model="value" filterable multiple collapse-tags placeholder="请选择" :filter-method="fltFunc">
                   <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
@@ -92,17 +83,6 @@
               <el-drawer :visible.sync="drawer" :direction="direction" :with-header="false" size="120px">
                 <span>我来啦!</span>
               </el-drawer></el-tab-pane>
-            <el-tab-pane label="定时任务补偿"><el-row :gutter="12">
-            <el-col :span="8">
-    <el-card shadow="hover" id="xFw" v-for="(item) in aRmtSvsLists" :key="item.id" :label="item.title" :name="item.id" :rmtHref="'/conn/'+item.id">
-    <a :href="'#'+item.id">
-    <div class="winCtrl"><i id="fltMneu">{{item.title}}</i><i class="icon-mail-reply" title="back to view" @click="fnMinWin"></i><i class="icon-external-link-sign" title="max window" @click="fnMaxWin"></i><i @click="fnFsc" class="icon-fullscreen" title="fullscreen"></i></div>
-    <i class="clearfix"></i>
-    <iframe :src="'/conn/'+item.id" class="ifrm" id="xFsc" @load="autoSaveImg"></iframe></a>
-    </el-card>
-  </el-col></el-row>
-  <img src="" id="myImg">
-  </el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>
@@ -129,19 +109,8 @@ export default {
       aRmtSvsLists: [ ],
       fullScreen: false,
       wdwidth:"100px",
-       editableTabsValue: '2',
-        editableTabs: [{
-          title: 'Tab 1',
-          name: '1111',
-          content: 'Tab 1 <pre>con\nte\nnt</pre>'
-        }, {
-          title: 'Tab 2',
-          name: '2222',
-          content: 'Tab 2 content'
-        }],
-        tabIndex: 99,
       isCollapse: true,
-      activeIndex2: '2-0',
+      activeIndex2: '/#',
       options: [{
         value: '选项1',
         label: '黄金糕'
@@ -165,6 +134,9 @@ export default {
     }
   },
   methods: {
+    fnSt () {
+      document.getElementById('tab-1').click()
+    },
     getRmtData () {
       this.$http.get('/api/v1/rmtsvlists').then(function(res) {
         this.aRmtSvsLists = res.data;
@@ -172,32 +144,49 @@ export default {
         console.log(res.status);
       })
     },
-    autoSaveImg () {
-      if(html2canvas) {
-        // window.setInterval(function(){
-        //   html2canvas(document.getElementById('xFsc').contentWindow.document.body, {allowTaint: true, useCORS: true}).then(function(canvas) {
-        //     const imgDt = canvas.toDataURL("image/webp", 0.6)
-        //     document.getElementById('myImg').src = imgDt
-        //   })
-        // },1000)
+    saveImg (o, o1,x1) {
+        const xD = o1.contentWindow.document, xHo = xD.body, xx01 = xD.getElementById('terminal-container')
+        if(xx01) {
+        window.setInterval(function() {
+          html2canvas(xHo, {allowTaint: true, useCORS: true}).then(function(canvas) {
+            o.$http.post('/api/v1/rmtsvImg',{'imgData': canvas.toDataURL("image/webp", 0.6),'id': x1})
+          })
+        },1000)
+      }
+    },
+    autoSaveImg (e,x1) {
+      if(html2canvas && e) {
+        this.saveImg(this, e.currentTarget || e.target,x1)
       }
     },
     handleCommand (command) {
-      if (-1 < String(command).indexOf('/conn/')){
-          this.aRmtSvsLists.push( { 'id': command.split('/')[2], 'title': document.activeElement.innerText })
+      if (-1 < String(command).indexOf('/conn/')) {
+        var bHv = false
+        var szId = command.split('/')[2]
+        for ( var x = 0; x < this.aRmtSvsLists.length; x++ ) {
+          if( (this.aRmtSvsLists[x].id + '') === szId) {
+            bHv = true
+            break
+          }
+        }
+        if(false === bHv) {
+          this.aRmtSvsLists.push( { 'id': szId, 'title': document.activeElement.innerText })
+        }
+        document.getElementById('img' + szId).style.display = 'none'
+        document.getElementById('ifrm' + szId).src = command
       }
     },
     handleClose1 (done) {
       done()
     },
-    fnMinWin () {
-      myjs.fnMinWin('xFw')
+    fnMinWin (e) {
+      myjs.fnMinWin(e.target.parentNode.parentNode.parentNode.parentNode, document)
     },
-    fnMaxWin () {
-      myjs.fnMaxWin('xFw')
+    fnMaxWin (e) {
+      myjs.fnMaxWin(e.target.parentNode.parentNode.parentNode.parentNode)
     },
-    fnFsc () {
-      myjs.fnFullScreen('xFsc')
+    fnFsc (e) {
+      myjs.fnFullScreen(e.target.parentNode.parentNode.parentNode)
     },
     fltFunc (s) {// 下拉列表过滤
       if ("" != s) {
@@ -225,12 +214,32 @@ export default {
 body {
   margin: 0
 }
+.sshrmt{width:100% !important;background-color:#004344 !important;color:#0ff}
 .winCtrl{
   float: right;
   position: relative;
   top:-15px;
 }
+.myImg img {
+  width:100%;
+  height:100%;
+}
+.myImg {
+  width:100%;
+  height:100%;
+  float:left;
+  left: 0;
+  top: 0;
+  position: relative
+}
 
+.myPaneCard{
+  flex-flow: row wrap;
+  justify-content:center;
+  display: -webkit-flex;
+  display: flex;
+}
+.myPaneCard .el-card{width:30%;height:260px;margin: 0 10px 0 10px;}
 .maxWin {
   position: fixed;
   float: left;
@@ -251,7 +260,7 @@ border:0;
 margin: 0;
 padding: 0;
 width:100%;
-height:100%;
+height: calc(-40px + 100%);
 }
 .el-card__body {
   padding:20px 0 0 0;
@@ -272,6 +281,12 @@ height:100%;
   z-index: 99999;
   height: calc(-100px + 100vh);
   margin-top: 60px
+}
+
+.el-tab-pane{
+  height: calc(-188px + 100vh);
+  overflow: auto;
+  padding:0 !important;
 }
 
 .myscrollbar {

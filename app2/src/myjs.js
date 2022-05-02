@@ -1,11 +1,17 @@
 export default {
-  fnMaxWin: function (szId) {
-    const o = document.getElementById(szId)
+  fnMaxWin: function (o) {
     o.className = o.className + ' maxWin'
   },
-  fnMinWin: function (szId) {
-    const o = document.getElementById(szId)
+  fnMinWin: function (o, doc) {
     o.className = 'el-card is-hover-shadow'
+    function fnMinw () {
+      var w = doc
+      var xx1 = w.exitFullscreen || w.mozCancelFullScreen || w.webkitExitFullscreen || w.msExitFullscreen
+      if (xx1) {
+        xx1.call(doc)
+      }
+    }
+    fnMinw()
   },
   fnFullScreen: function (szId) {
     /* Get into full screen */
@@ -20,7 +26,7 @@ export default {
         element.msRequestFullscreen()
       }
     }
-    GoInFullscreen(document.getElementById(szId))
+    GoInFullscreen(szId)
   },
   fnAutoFocus: function () {
     document.body.onkeydown = function (event) {

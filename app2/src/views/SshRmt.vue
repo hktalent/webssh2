@@ -32,7 +32,7 @@
       </el-row>
       <el-row>
         <el-form-item label-width="0">
-          <v-btn elevation="19" @click="saveSshConfig" ref="r7">保存</v-btn>
+          <el-button type="primary" round elevation="19" @click="saveSshConfig" ref="r7">保存</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -66,7 +66,7 @@ export default {
         ip: '192.168.0.111',
         port: 222,
         user: 'root',
-        p5wd: 'Miracle***888',
+        p5wd: '',
         key: ''
       }
     }
@@ -79,8 +79,12 @@ export default {
     },
     saveSshConfig () {
       axios.post('/api/v1/rsc', this.form).then(resp => {
-        if (resp.data.code === 1)Message.success('save msg: ' + resp.data.msg)
-        else Message.info('save error: ' + resp.data.msg)
+        if (resp.data.code > 0) {
+          Message.success('save msg: ' + resp.data.msg)
+          console.log(this.$parent.aRmtSvsLists)
+        } else {
+          Message.info('save error: ' + resp.data.msg)
+        }
         return 0
       }
       ).catch(function (error) {
