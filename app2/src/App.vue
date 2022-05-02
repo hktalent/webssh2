@@ -104,6 +104,11 @@ export default {
     }
     this.bLoad = true;
   },
+  provide () {
+    return {
+      getRmtData: this.getRmtData
+    }
+  },
   data () {
     return {
       aRmtSvsLists: [ ],
@@ -145,6 +150,9 @@ export default {
       })
     },
     saveImg (o, o1,x1) {
+        if("IFRAME" !== o1.tagName || !o1.src) {
+          return
+        }
         const xD = o1.contentWindow.document, xHo = xD.body, xx01 = xD.getElementById('terminal-container')
         if(xx01) {
         window.setInterval(function() {
@@ -235,7 +243,8 @@ body {
 
 .myPaneCard{
   flex-flow: row wrap;
-  justify-content:center;
+  justify-content:left;
+  align-content:left;
   display: -webkit-flex;
   display: flex;
 }
@@ -251,8 +260,8 @@ body {
 }
 
 .el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
-    -webkit-box-shadow: 0 4px 36px 0 rgba(0, 0, 0, .1);
-    box-shadow:0 4px 36px 0 rgba(0, 0, 0, .1)
+    -webkit-box-shadow: 0 4px 36px 0 rgba(0, 0,0, .9);
+    box-shadow:0 4px 36px 0 rgba(0, 0,0, .9)
 }
 .winCtrl i{margin:3px !important;cursor:pointer}
 .ifrm{

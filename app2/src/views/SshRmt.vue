@@ -54,6 +54,7 @@ import { Message } from 'element-ui'
 import VueTagsInput from '@johmun/vue-tags-input'
 
 export default {
+  inject: ['getRmtData'],
   components: {
     VueTagsInput
   },
@@ -61,11 +62,11 @@ export default {
     return {
       tags: [],
       form: {
-        title: 'Home AS6510T-60C1',
-        tags: 'ssh',
-        ip: '192.168.0.111',
-        port: 222,
-        user: 'root',
+        title: 'Home Old Air',
+        tags: '',
+        ip: '192.168.0.100',
+        port: 5900,
+        user: 'xiatian',
         p5wd: '',
         key: ''
       }
@@ -78,10 +79,16 @@ export default {
       this.$refs[nextRef].focus()
     },
     saveSshConfig () {
+      var aT = []
+      for (var i = 0; i < this.tags.length; i++) {
+        aT.push(this.tags[i].text)
+      }
+      this.form.tags = aT.join(',')
+      console.log(this.form.tags)
       axios.post('/api/v1/rsc', this.form).then(resp => {
         if (resp.data.code > 0) {
           Message.success('save msg: ' + resp.data.msg)
-          console.log(this.$parent.aRmtSvsLists)
+          this.getRmtData()
         } else {
           Message.info('save error: ' + resp.data.msg)
         }
