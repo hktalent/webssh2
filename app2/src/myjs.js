@@ -5,8 +5,8 @@ export default {
   fnMinWin: function (o, doc) {
     o.className = 'el-card is-hover-shadow'
     function fnMinw () {
-      var w = doc
-      var xx1 = w.exitFullscreen || w.mozCancelFullScreen || w.webkitExitFullscreen || w.msExitFullscreen
+      const w = doc
+      const xx1 = w.exitFullscreen || w.mozCancelFullScreen || w.webkitExitFullscreen || w.msExitFullscreen
       if (xx1) {
         xx1.call(doc)
       }

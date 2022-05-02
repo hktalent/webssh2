@@ -79,8 +79,8 @@ export default {
       this.$refs[nextRef].focus()
     },
     saveSshConfig () {
-      var aT = []
-      for (var i = 0; i < this.tags.length; i++) {
+      const aT = []
+      for (let i = 0; i < this.tags.length; i++) {
         aT.push(this.tags[i].text)
       }
       this.form.tags = aT.join(';')

@@ -78,8 +78,13 @@
 <script>
 import myjs from './myjs'
 import html2canvas from 'html2canvas'
+import { AgGridVue } from 'ag-grid-vue'
+
 /* eslint-disable */
 export default {
+  components: {
+    AgGridVue
+  },
   name: 'app',
   runtimeCompiler: true,
   bLoad: false,
@@ -110,7 +115,6 @@ export default {
   },
   methods: {
     fnSt1 (x) {
-      console.log(x)
       if (x.$el.id === "pane-RMCm1") {
         addId.click()
       }
@@ -146,9 +150,9 @@ export default {
     },
     handleCommand (command) {
       if (-1 < String(command).indexOf('/conn/')) {
-        var bHv = false
-        var szId = command.split('/')[2]
-        for ( var x = 0; x < this.aRmtSvsLists.length; x++ ) {
+        let bHv = false
+        let szId = command.split('/')[2]
+        for ( let x = 0; x < this.aRmtSvsLists.length; x++ ) {
           if( (this.aRmtSvsLists[x].id + '') === szId) {
             bHv = true
             break
@@ -186,6 +190,8 @@ export default {
 <style lang="less">
 @import url("//unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css");
 @import url("css/font-awesome.css");
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 body {
   margin: 0
