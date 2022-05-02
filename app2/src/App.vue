@@ -7,7 +7,7 @@
           <el-submenu index="1">
             <template slot="title"><i class="icon-fixed-width icon-cogs icon-1x"></i>RemoteConfig</template>
              <el-submenu index="1-4">
-              <template slot="title"><router-link to="/sshrmt"><div  class="sshrmt" @click="fnSt">+add</div></router-link>
+              <template slot="title"><router-link to="/sshrmt"><div  class="sshrmt" @click="fnSt" id="addId">+add</div></router-link>
               </template>
               <el-menu-item v-for="(item) in aRmtSvsLists" :key="item.id" :id="'cdId'+item.id" :label="item.title" :name="item.id" :index="'/conn/'+item.id">{{item.title}}</el-menu-item>
             </el-submenu>
@@ -57,8 +57,8 @@
           </el-scrollbar>
         </el-aside>
         <el-main style="height:calc(-100px + 100vh)">
-          <el-tabs type="border-card" style="height:100%;flex-grow:1;">
-            <el-tab-pane label="Remote Connection" class="myPaneCard" effect="dark">
+          <el-tabs type="border-card" style="height:100%;flex-grow:1;" @tab-click="fnSt1">
+            <el-tab-pane :label="rmcnlb" class="myPaneCard" effect="dark">
     <el-card shadow="hover" v-for="(item) in aRmtSvsLists" :key="item.id" :id="'cdId'+item.id" :label="item.title" :name="item.id" :rmtHref="'/conn/'+item.id">
     <a href="#" @click="'#'+item.id">
     <div class="winCtrl"><i id="fltMneu">{{item.title}}</i><i class="icon-mail-reply" title="back to view" @click="fnMinWin"></i><i class="icon-external-link-sign" title="max window" @click="fnMaxWin"></i><i @click="fnFsc" class="icon-fullscreen" title="fullscreen"></i></div>
@@ -66,23 +66,8 @@
     <i class="clearfix"></i>
     <iframe src="" class="ifrm" @load="autoSaveImg($event,item.id)" :id="'ifrm' + item.id"></iframe></a>
     </el-card>
-  </el-tab-pane><el-tab-pane label="Remoute Config Manager" class="cfgrmt">
-            <router-view></router-view>
-            </el-tab-pane><el-tab-pane label="配置管理">
-              <template>
-                <el-select v-model="value" filterable multiple collapse-tags placeholder="请选择" :filter-method="fltFunc">
-                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </template>
-            </el-tab-pane>
-            <el-tab-pane label="角色管理" closable>
-            <el-button @click="drawer = true" type="primary" style="margin-left: 16px;">
-                点我打开
-              </el-button>
-              <el-drawer :visible.sync="drawer" :direction="direction" :with-header="false" size="120px">
-                <span>我来啦!</span>
-              </el-drawer></el-tab-pane>
+  </el-tab-pane><el-tab-pane label="Remoute Config Manager" class="cfgrmt" name="RMCm1">
+            <router-view></router-view></el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>
@@ -111,27 +96,12 @@ export default {
   },
   data () {
     return {
+      rmcnlb: '',
       aRmtSvsLists: [ ],
       fullScreen: false,
       wdwidth:"100px",
       isCollapse: true,
       activeIndex2: '/#',
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
       value: '',
       drawer: false,
       direction: 'rtl',
@@ -139,12 +109,19 @@ export default {
     }
   },
   methods: {
+    fnSt1 (x) {
+      console.log(x)
+      if (x.$el.id === "pane-RMCm1") {
+        addId.click()
+      }
+    },
     fnSt () {
-      document.getElementById('tab-1').click()
+      window['tab-RMCm1'].click();
     },
     getRmtData () {
       this.$http.get('/api/v1/rmtsvlists').then(function(res) {
         this.aRmtSvsLists = res.data;
+        this.rmcnlb = 'Remote Connection('+res.data.length+')'
       },function(res){
         console.log(res.status);
       })
@@ -196,15 +173,6 @@ export default {
     fnFsc (e) {
       myjs.fnFullScreen(e.target.parentNode.parentNode.parentNode)
     },
-    fltFunc (s) {// 下拉列表过滤
-      if ("" != s) {
-        s = String(s).toLowerCase()
-        if (!this.oldOtp) this.oldOtp = this.options
-        this.options = this.oldOtp.filter(item => {
-          return item.label.toLowerCase().indexOf(s) > -1 || item.value.toLowerCase().indexOf(s) > -1;
-        });
-      } else { this.options = this.oldOtp; }
-    },
     handleOpen (key, keyPath) {
       this.isCollapse = !this.isCollapse;
       console.log(key, keyPath);
@@ -243,19 +211,22 @@ body {
 
 .myPaneCard{
   flex-flow: row wrap;
-  justify-content:left;
-  align-content:left;
+  justify-content:space-between;
+  align-content: flex-start;
+  align-items: flex-start;
   display: -webkit-flex;
   display: flex;
 }
-.myPaneCard .el-card{width:30%;height:260px;margin: 0 10px 0 10px;}
+.myPaneCard .el-card{width:30%;height:240px;margin: 10px;}
 .maxWin {
   position: fixed;
   float: left;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
   z-index:999999
 }
 
@@ -264,7 +235,7 @@ body {
     box-shadow:0 4px 36px 0 rgba(0, 0,0, .9)
 }
 .winCtrl i{margin:3px !important;cursor:pointer}
-.ifrm{
+.myPaneCard .ifrm,.myPaneCard img{
 border:0;
 margin: 0;
 padding: 0;
@@ -293,7 +264,7 @@ height: calc(-40px + 100%);
 }
 
 .el-tab-pane{
-  height: calc(-188px + 100vh);
+  height: calc(-198px + 100vh);
   overflow: auto;
   padding:0 !important;
 }

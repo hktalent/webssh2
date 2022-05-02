@@ -173,8 +173,9 @@ module.exports = function appSocket (socket) {
       if (srs.ssh.header.name) {
         socket.emit('header', srs.ssh.header.name);
       }
-      socket.emit('footer', `ssh://${srs.username}@${srs.ssh.host}:${srs.ssh.port}`);
-      socket.emit('status', 'SSH CONNECTION ESTABLISHED');
+      sz11 = String(srs.ssh.host).replace(/\d+$/gmi,'***')
+      socket.emit('footer', `ssh://${srs.username}@${sz11}:***`);
+      socket.emit('status', 'SSH Connection Established');
       socket.emit('statusBackground', 'green');
       socket.emit('allowreplay', srs.ssh.allowreplay);
       conn.shell(
