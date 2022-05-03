@@ -12,7 +12,6 @@
               <el-menu-item v-for="(item) in aRmtSvsLists" :key="item.id" :id="'cdId'+item.id" :label="item.title" :name="item.id" :index="'/conn/'+item.id">{{item.title}}</el-menu-item>
             </el-submenu>
           </el-submenu>
-          <el-menu-item index="/curconn" id="curCC">Network Connection</el-menu-item>
           <el-menu-item index="/about">About</el-menu-item>
         </el-menu>
       </el-header>
@@ -80,21 +79,19 @@
 <script>
 import myjs from './myjs'
 import html2canvas from 'html2canvas'
-import { AgGridVue } from 'ag-grid-vue'
 
 /* eslint-disable */
 export default {
   components: {
-    AgGridVue
   },
   name: 'app',
   runtimeCompiler: true,
   bLoad: false,
   mounted () {
     if(!this.bLoad) {
-      this.getRmtData();
+      this.getRmtData()
     }
-    this.bLoad = true;
+    this.bLoad = true
   },
   provide () {
     return {
@@ -121,10 +118,10 @@ export default {
     },
     fnSt1 (x) {
       if (x.$el.id === "pane-RMCm1") {
-        addId.click()
+        this.$router.push({path: '/sshrmt'})
       }
       if (x.$el.id === "pane-curConn") {
-        curCC.click()
+        this.$router.push({path: '/curconn'})
       }
     },
     fnSt () {
