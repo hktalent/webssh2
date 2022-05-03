@@ -66,9 +66,9 @@
     <iframe src="" class="ifrm" @load="autoSaveImg($event,item.id)" :id="'ifrm' + item.id"></iframe></a>
     </el-card>
   </el-tab-pane><el-tab-pane label="Remoute Config Manager" class="cfgrmt" name="RMCm1">
-            <router-view></router-view></el-tab-pane>
+            <keep-alive><router-view></router-view></keep-alive></el-tab-pane>
             <el-tab-pane label="Network Connection" name="curConn">
-            <router-view name="curconn"></router-view></el-tab-pane>
+            <keep-alive><router-view name="curconn"></router-view></keep-alive></el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>
