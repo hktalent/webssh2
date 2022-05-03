@@ -27,8 +27,8 @@
     <el-table-column label="pid" prop="pid" width="108px" :sortable="sortable"></el-table-column>
     <el-table-column label="ip" prop="ip" width="120px" :sortable="sortable"></el-table-column>
     <el-table-column label="country" prop="ipInfo.country" width="110px" :sortable="sortable"></el-table-column>
-    <el-table-column label="org" prop="ipInfo.org" width="110px" :sortable="sortable"></el-table-column>
     <el-table-column label="city" prop="ipInfo.city" width="110px" :sortable="sortable"></el-table-column>
+    <el-table-column label="org" prop="ipInfo.org" width="110px" :sortable="sortable"></el-table-column>
     <el-table-column label="CreatedAt" prop="CreatedAt" width="240" :sortable="sortable"></el-table-column>
     <el-table-column label="cmd" prop="cmd" :sortable="sortable" :show-overflow-tooltip="soft"><template slot="header">
         <el-input
