@@ -5,8 +5,8 @@
         <el-col :span="12">
           <el-input  size="small" placeholder="please input  name" v-model="form.title"><template slot="prepend">Title:</template></el-input>
         </el-col>
-        <el-col :span="12"><template>
-        <vue-tags-input v-model="form.tags" :tags="tags" @tags-changed="newTags => tags = newTags"><template slot="prepend">Tags:</template></vue-tags-input></template><!-- <el-input  size="small" placeholder="please input port" v-model="form.tags"><template slot="prepend">Tags:</template></el-input> -->
+        <el-col :span="12">
+        <vue-tags-input v-model="form.tags" :tags="tags" @tags-changed="newTags => tags = newTags"><template slot="prepend">Tags:</template></vue-tags-input>
         </el-col>
       </el-row>
       <el-row>
@@ -44,6 +44,7 @@
   padding-top: 20px;
 }
 
+.vue-tags-input,.ti-input{max-width:none !important}
 .el-row {
 margin:8px 0 8px 0;
 }

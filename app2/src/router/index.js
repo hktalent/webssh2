@@ -22,6 +22,14 @@ const routes = [
     path: '/sshrmt',
     name: 'sshrmt',
     component: () => import('../views/SshRmt.vue')
+  },
+  {
+    path: '/curconn',
+    name: 'CurConn',
+    second: 'curconn',
+    components: {
+      curconn: () => import('../views/CurConn.vue')
+    }
   }
 ]
 

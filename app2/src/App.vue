@@ -12,7 +12,7 @@
               <el-menu-item v-for="(item) in aRmtSvsLists" :key="item.id" :id="'cdId'+item.id" :label="item.title" :name="item.id" :index="'/conn/'+item.id">{{item.title}}</el-menu-item>
             </el-submenu>
           </el-submenu>
-          <el-menu-item index="2">处理中心</el-menu-item>
+          <el-menu-item index="/curconn" id="curCC">Network Connection</el-menu-item>
           <el-menu-item index="/about">About</el-menu-item>
         </el-menu>
       </el-header>
@@ -68,6 +68,8 @@
     </el-card>
   </el-tab-pane><el-tab-pane label="Remoute Config Manager" class="cfgrmt" name="RMCm1">
             <router-view></router-view></el-tab-pane>
+            <el-tab-pane label="Network Connection" name="curConn">
+            <router-view name="curconn"></router-view></el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>
@@ -114,9 +116,15 @@ export default {
     }
   },
   methods: {
+    fnNcc () {
+      curCC.click();
+    },
     fnSt1 (x) {
       if (x.$el.id === "pane-RMCm1") {
         addId.click()
+      }
+      if (x.$el.id === "pane-curConn") {
+        curCC.click()
       }
     },
     fnSt () {
@@ -190,8 +198,6 @@ export default {
 <style lang="less">
 @import url("//unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css");
 @import url("css/font-awesome.css");
-@import "~ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 body {
   margin: 0
