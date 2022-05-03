@@ -12,6 +12,10 @@ Vue.use(ElementUI, { size: 'medium', zIndex: 3000 })
 Vue.use(VueResource)
 Vue.config.productionTip = false
 
+router.beforeEach((to, from, next) => {
+  document.title = '51pwn Tools'
+  next()
+})
 new Vue({
   router,
   store,
