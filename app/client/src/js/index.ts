@@ -53,7 +53,7 @@ const countdown = document.getElementById('countdown');
 const fitAddon = new FitAddon();
 const terminalContainer = document.getElementById('terminal-container');
 const autoClsHis = document.getElementById('autoClsHis');
-const disconnectId = document.getElementById('disconnect');
+const disconnectId = document.getElementById('disconnectID');
 
 
 term.loadAddon(fitAddon);
@@ -154,7 +154,7 @@ function fnAutoClsHis() {
   return false;
 }
 function fnDisconnect() {
-  socket.emit('disconnect')
+  socket.emit('disconnect');
 }
 // draw/re-draw menu and reattach listeners
 // when dom is changed, listeners are abandonded
