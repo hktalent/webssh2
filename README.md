@@ -58,7 +58,7 @@ Copy app/config.json.template to app/config.json and modify the latter:
 Rebuild and run
 
 ```bash
-docker build -t webssh2 .
+docker build -t hktalent/webssh2 .
 docker run --name webssh2 -d -p 2222:2222 webssh2
 ```
 
