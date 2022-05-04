@@ -11,8 +11,6 @@ const SSH = require('ssh2').Client;
 const CIDRMatcher = require('cidr-matcher');
 const validator = require('validator');
 const dnsPromises = require('dns').promises;
-const { Level } = require('level')
-const db = new Level('51pwn_Db', { valueEncoding: 'json' })
 const fs = require('fs');
 const bEnableX11 = false;
 
@@ -23,13 +21,6 @@ const net = require('net');
 let termCols;
 let termRows;
 
-function getKey (szKey) {
-  return new Promise(function (resolve) {
-    db.get(szKey, function (e, v) {
-      resolve(v)
-    })
-  });
-}
 
 // public
 module.exports = function appSocket (socket) {
@@ -191,7 +182,7 @@ module.exports = function appSocket (socket) {
             return;
           }
           // 重置
-          if(srs.autoReset) {
+          if (srs.autoReset) {
             stream.write('reset\n');
           }
 
@@ -285,8 +276,6 @@ module.exports = function appSocket (socket) {
         keepaliveCountMax: srs.ssh.keepaliveCountMax,
         debug: debug('ssh2'),
       });
-      // story to cache
-      db.put(srs.ssh.host + ":" + srs.ssh.port, JSON.stringify(oCnnInfo))
     } else {
       debugWebSSH2(
         `Attempt to connect without session.username/password or session varialbles defined, potentially previously abandoned client session. disconnecting websocket client.\r\nHandshake information: \r\n  ${JSON.stringify(
@@ -317,14 +306,6 @@ module.exports = function appSocket (socket) {
     }
     setupConnection();
   });
-
-  //  from cache
-  const oCnnInfo = getKey(srs.ssh.host + ":" + srs.ssh.port);
-  if (oCnnInfo && (oCnnInfo.username && oCnnInfo.password || oCnnInfo.privateKey)) {
-    srs.username = oCnnInfo.username;
-    srs.userpassword = oCnnInfo.password;
-    srs.privatekey = oCnnInfo.privateKey;
-  }
   // without basicAuth
   if ((srs.username && srs.userpassword || srs.privatekey) && srs.ssh) setupConnection();
 };

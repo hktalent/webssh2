@@ -53,6 +53,8 @@ const countdown = document.getElementById('countdown');
 const fitAddon = new FitAddon();
 const terminalContainer = document.getElementById('terminal-container');
 const autoClsHis = document.getElementById('autoClsHis');
+const disconnectId = document.getElementById('disconnect');
+
 
 term.loadAddon(fitAddon);
 term.open(terminalContainer);
@@ -151,6 +153,9 @@ function fnAutoClsHis() {
   term.focus();
   return false;
 }
+function fnDisconnect() {
+  socket.emit('disconnect')
+}
 // draw/re-draw menu and reattach listeners
 // when dom is changed, listeners are abandonded
 function drawMenu() {
@@ -164,6 +169,7 @@ function drawMenu() {
     credentialsBtn.style.display = 'block';
   }
   autoClsHis.addEventListener('click', fnAutoClsHis);
+  disconnectId.addEventListener('click', fnDisconnect);
   if (loggedData) {
     downloadLogBtn.addEventListener('click', downloadLog);
     downloadLogBtn.style.display = 'block';
