@@ -185,7 +185,9 @@ module.exports = function appSocket (socket) {
           if (srs.autoReset) {
             stream.write('reset\n');
           }
-
+          socket.on('closeConnect', () => {
+            conn.end();
+          });
           socket.on('data', (data) => {
             stream.write(data);
           });

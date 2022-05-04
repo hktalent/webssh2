@@ -45,7 +45,7 @@ let shutdownMode = false;
 let shutdownInterval = 0;
 let connectionCount = 0;
 // eslint-disable-next-line consistent-return
-function safeShutdownGuard (req, res, next) {
+function safeShutdownGuard(req, res, next) {
   if (shutdownMode) {
     res.status(503).end('Service unavailable: Server shutting down');
   } else {
@@ -53,7 +53,7 @@ function safeShutdownGuard (req, res, next) {
   }
 }
 // clean stop
-function stopApp (reason) {
+function stopApp(reason) {
   shutdownMode = false;
   // eslint-disable-next-line no-console
   if (reason) console.log(`Stopping: ${reason}`);
@@ -85,7 +85,7 @@ app.get('/ssh/reauth', (req, res) => {
     );
 });
 
-var fnSshCbk=function(req, res){
+var fnSshCbk = function(req, res){
   if(req.query)
   {
     for(k in req.query)

@@ -65,9 +65,6 @@ const socket = io({
   path: '/ssh/socket.io',
 });
 
-function fnConnect(ip, port, u, p, k) {
-  socket.emit('connSsh', ip, port, u, p, k);
-}
 // reauthenticate
 function reauthSession () { // eslint-disable-line
   debug('re-authenticating');
@@ -154,7 +151,7 @@ function fnAutoClsHis() {
   return false;
 }
 function fnDisconnect() {
-  socket.emit('disconnect');
+  socket.emit('closeConnect');
 }
 // draw/re-draw menu and reattach listeners
 // when dom is changed, listeners are abandonded
