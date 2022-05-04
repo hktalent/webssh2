@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  webssh2:
+    image: hktalent/webssh2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    restart: always
+    container_name: webssh2
+    ports:
+      - 2222:2222
