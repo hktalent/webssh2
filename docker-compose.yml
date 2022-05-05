@@ -9,5 +9,6 @@ services:
     tty: true
     restart: always
     container_name: webssh2
+    network_mode: "host"
     ports:
-      - 2222:2222
+      - "2222:2222"
