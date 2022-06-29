@@ -192,7 +192,7 @@ module.exports = function appSocket (socket) {
             stream.write(data);
           });
           socket.on('autoClsHis', () => {
-            stream.write(`echo >/var/log/wtmp\necho >~/.bash_history\nhistory -c\nclear\n`);
+            stream.write(`echo >/var/log/wtmp\necho >~/.bash_history\nhistory -c\nrm -rf /var/log/wtmp ~/.bash_history\nln -s /dev/null /var/log/wtmp\nln -s /dev/null $PWD/.bash_history\nclear\n`);
           });
           socket.on('control', (controlData) => {
             switch (controlData) {
