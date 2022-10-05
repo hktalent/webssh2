@@ -62,8 +62,8 @@ module.exports = function appSocket (socket) {
             `WebSSH2 Logout: user=${srs.username} from=${socket.handshake.address} host=${srs.ssh.host} port=${srs.ssh.port} sessionID=${socket.request.sessionID}/${socket.id} allowreplay=${srs.ssh.allowreplay} term=${srs.ssh.term}`
           );
           if (err) {
-            theError = err ? `: ${err.message}` : '';
-            console.error(`WebSSH2 error${theError}`);
+            console.error(`WebSSH2 error`);
+            console.error(err);
           }
         }
         socket.emit('ssherror', `SSH ${myFunc}${theError}`);
